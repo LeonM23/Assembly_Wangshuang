@@ -16,6 +16,7 @@ start:  	mov ax, data
 			mov sp, 32
 			
 			mov ax, 12666
+			mov dx, 1000
 			mov si, 0
 			call dtoc
 			
