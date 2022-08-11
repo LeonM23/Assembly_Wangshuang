@@ -32,29 +32,29 @@ show_str:	push es
 			push ax
 			push bx
 			push cx
-			push si
+			push bp
 			
 			mov ax, 000AH
 			mul dh
-			add ax, 0B800H
+			add ax, 0B7F6H
 			mov es, ax
 			mov bl, dl
 			mov bh, 0
 			sub bx, 1
 			add bx, bx
-			mov si, 0
+			mov bp, 0
 			mov al, cl
 			mov ah, 0
-show_strs:	mov cl, ds:[si]
+show_strs:	mov cl, ds:[si+bp]
 			mov ch, 0
 			jcxz show_strok
 			mov byte ptr es:[bx], cl
 			mov byte ptr es:[bx+1], al
-			inc si
+			inc bp
 			add bx, 2
 			jmp short show_strs
 		
-show_strok: pop si
+show_strok: pop bp
 			pop cx
 			pop bx
 			pop ax
@@ -62,12 +62,13 @@ show_strok: pop si
 			ret
 			
 divdw:		push bx
-
-			push ax 
+			push ax
+			
 			mov ax, dx
 			mov dx, 0
 			div cx
 			mov bx, ax
+
 			pop ax
 			div cx
 			mov cx, dx
@@ -81,14 +82,15 @@ dtoc:		push ax
 			push cx
 			push dx
 			
-			
 			mov bx, 0
 dtocs:  	mov cx, 10
 			call divdw
-			jcxz dtocok
 			add cx, 30H
 			push cx
 			inc bx
+			
+			mov cx, ax
+			jcxz dtocok
 			jmp short dtocs
 			
 dtocok:		mov cx, bx
@@ -104,6 +106,7 @@ dtocs1:		pop ax
 			pop bx
 			pop ax
 			ret
+			
 
 code ends
 
